@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Favicon inline: titik merah di atas hitam -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16'/%3E%3Ccircle cx='8' cy='8' r='3' fill='%23b3231f'/%3E%3C/svg%3E" />
+
+  <title>WELCOME</title>
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ===== Layar 1: pembuka ===== -->
+  <section id="intro" class="screen">
+    <div class="rec" aria-hidden="true">
+      <span class="rec-dot"></span>REC
+    </div>
+
+    <h1 class="title">WELCOME</h1>
+
+    <p class="hint">keraskan volume</p>
+
+    <button id="startBtn" class="btn" type="button">CLICK TO CONTINUE</button>
+  </section>
+
+  <!-- ===== Layar 2: video ===== -->
+  <section id="player" class="screen hidden">
+    <!--
+      playsinline + webkit-playsinline : video tetap di halaman, tidak
+      memaksa fullscreen di HP.
+      preload="auto"                   : siapkan data lebih dulu, TANPA autoplay —
+                                          pemutaran hanya terjadi lewat klik tombol.
+    -->
+    <video
+      id="scareVideo"
+      class="video"
+      playsinline
+      webkit-playsinline
+      preload="auto"
+    >
+      <source src="scare.mp4" type="video/mp4" />
+    </video>
+
+    <!-- Muncul setelah video selesai -->
+    <div id="endScreen" class="overlay hidden">
+      <button id="replayBtn" class="btn" type="button">PLAY AGAIN</button>
+    </div>
+
+    <!-- Muncul jika video gagal diputar -->
+    <div id="errorBox" class="overlay overlay--error hidden" role="alert">
+      <p class="error-title">VIDEO GAGAL DIPUTAR</p>
+      <p id="errorMsg" class="error-msg"></p>
+      <button id="retryBtn" class="btn btn--small" type="button">COBA LAGI</button>
+    </div>
+  </section>
+
+  <script src="script.js"></script>
+</body>
+</html>

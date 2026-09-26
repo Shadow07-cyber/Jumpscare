@@ -1,0 +1,186 @@
+/* ============================================================
+   style.css — Jumpscare minimalis, tema "kamera pengintai"
+   ============================================================ */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg:      #000000;   /* hitam pekat */
+  --ink:     #e8e6e1;   /* putih tulang */
+  --ink-dim: #6b6963;   /* abu redup */
+  --red:     #b3231f;   /* merah REC */
+  --mono: ui-monospace, "Cascadia Mono", "SF Mono",
+          Menlo, Consolas, "Liberation Mono", monospace;
+}
+
+html, body { height: 100%; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--mono);
+  overflow: hidden; /* tidak ada guliran sama sekali */
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---------- Layar ---------- */
+.screen {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(1.4rem, 4vh, 2.6rem);
+  padding: 1.5rem;
+  text-align: center;
+  background: var(--bg);
+  animation: fadeIn 0.4s ease both; /* transisi masuk dari hitam */
+}
+
+.screen.is-leaving {
+  animation: fadeOut 0.4s ease both; /* transisi keluar ke hitam */
+}
+
+.hidden { display: none !important; }
+
+/* ---------- Layar pembuka ---------- */
+.rec {
+  position: absolute;
+  top: 1.2rem;
+  left: 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.68rem;
+  letter-spacing: 0.32em;
+  color: var(--ink-dim);
+}
+
+.rec-dot {
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 50%;
+  background: var(--red);
+  animation: blink 2.4s steps(1, end) infinite;
+}
+
+.title {
+  font-size: clamp(2.2rem, 11vw, 5.5rem); /* responsif, aman di layar sempit */
+  font-weight: 400;
+  letter-spacing: 0.3em;
+  text-indent: 0.3em; /* kompensasi tracking agar tetap center */
+  animation: flicker 5s linear infinite;
+}
+
+.hint {
+  font-size: 0.7rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+}
+
+/* ---------- Tombol ---------- */
+.btn {
+  font-family: inherit;
+  font-size: 0.82rem;
+  letter-spacing: 0.26em;
+  text-indent: 0.26em;
+  text-transform: uppercase;
+  color: var(--ink);
+  background: transparent;
+  border: 1px solid rgba(232, 230, 225, 0.45);
+  padding: 1.05rem 2.2rem;
+  min-height: 48px; /* area sentuh nyaman di HP */
+  cursor: pointer;
+  user-select: none;
+  touch-action: manipulation; /* tanpa jeda double-tap zoom */
+  -webkit-tap-highlight-color: transparent;
+  transition: background 0.25s ease, color 0.25s ease,
+              border-color 0.25s ease, transform 0.15s ease;
+}
+
+.btn:hover,
+.btn:focus-visible {
+  background: var(--ink);
+  color: var(--bg);
+  border-color: var(--ink);
+}
+
+.btn:active { transform: scale(0.96); }
+
+.btn:focus-visible {
+  outline: 1px solid var(--ink);
+  outline-offset: 4px;
+}
+
+.btn--small {
+  padding: 0.8rem 1.6rem;
+  font-size: 0.72rem;
+}
+
+/* ---------- Video ---------- */
+.video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* proporsional, MEMENUHI layar tanpa terpotong */
+  background: var(--bg);
+  z-index: 1;
+}
+
+/* ---------- Overlay (selesai / error) ---------- */
+.overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.4rem;
+  padding: 1.5rem;
+  background: rgba(0, 0, 0, 0.78);
+  animation: fadeIn 0.5s ease both;
+}
+
+.overlay--error { background: rgba(0, 0, 0, 0.92); }
+
+.error-title {
+  font-size: 0.8rem;
+  letter-spacing: 0.3em;
+  text-indent: 0.3em;
+  color: var(--red);
+}
+
+.error-msg {
+  max-width: 32rem;
+  font-size: 0.78rem;
+  line-height: 1.8;
+  letter-spacing: 0.04em;
+  color: var(--ink-dim);
+}
+
+/* ---------- Animasi ---------- */
+@keyframes fadeIn  { from { opacity: 0; } to { opacity: 1; } }
+@keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
+@keyframes blink   { 50%  { opacity: 0; } }
+
+@keyframes flicker {
+  0%, 88%, 92%, 96%, 100% { opacity: 1; }
+  90% { opacity: 0.45; }
+  94% { opacity: 0.75; }
+}
+
+/* ---------- Hormati preferensi "kurangi gerakan" ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .title,
+  .rec-dot { animation: none; }
+  .screen,
+  .overlay { animation-duration: 0.01s; }
+}
